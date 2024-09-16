@@ -2,8 +2,8 @@
   "name": "discordbot",
   "version": "1.0.0",
   "main": "./src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "scripts": { 
+    "start": "npm run build && node index.js", "build": "tsc" 
   },
   "keywords": [],
   "author": "",
@@ -12,5 +12,16 @@
   "dependencies": {
     "discord.js": "^14.16.1",
     "mongoose": "^8.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevingg06/bot_discord.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kevingg06/bot_discord/issues"
+  },
+  "homepage": "https://github.com/Kevingg06/bot_discord#readme",
+  "devDependencies": {
+    "typescript": "^5.6.2"
   }
 }
