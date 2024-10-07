@@ -12,7 +12,6 @@ module.exports = {
 
         
         const command = client.commands.get(interaction.commandName);
-
        
         if (!command) {
             return interaction.reply({ content: `Hola ${interaction.user}, ese comando no está válido por el momento.`, ephemeral: true });
