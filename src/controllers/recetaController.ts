@@ -1,6 +1,6 @@
-import Receta from '../models/receta2'; 
+const Receta = require('../models/receta2');
 
-export const obtenerRecetas = async () => {
+const obtenerRecetas = async () => {
   try {
     const recetas = await Receta.find().populate('ingredientes instrucciones');
     return recetas;
@@ -10,7 +10,7 @@ export const obtenerRecetas = async () => {
   }
 };
 
-export const obtenerRecetaPorNombre = async (nombre: string) => {
+const obtenerRecetaPorNombre = async (nombre: string) => {
   try {
     const receta = await Receta.findOne({ nombre }).populate('ingredientes instrucciones');
     return receta;
@@ -18,4 +18,9 @@ export const obtenerRecetaPorNombre = async (nombre: string) => {
     console.error('Error al obtener la receta:', error);
     return null;
   }
+};
+
+module.exports = {
+  obtenerRecetas,
+  obtenerRecetaPorNombre,
 };
