@@ -7,7 +7,7 @@ const rest = new REST({ version: '10' }).setToken(tokenbot);
   try {
     console.log('Fetching global application commands...');
 
-    // Obtener todos los comandos globales
+  
     const commands = await rest.get(Routes.applicationCommands(clientId));
 
     console.log(`Found ${commands.length} global application commands.`);
@@ -15,7 +15,7 @@ const rest = new REST({ version: '10' }).setToken(tokenbot);
     for (const command of commands) {
       console.log(`Deleting command with ID ${command.id}...`);
       
-      // Eliminar cada comando
+
       await rest.delete(Routes.applicationCommand(clientId, command.id));
     }
 

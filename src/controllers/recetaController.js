@@ -8,10 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const Receta = require('../models/receta2');
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.obtenerRecetaPorNombre = exports.obtenerRecetas = void 0;
+const receta2_js_1 = __importDefault(require("../models/receta2.js"));
 const obtenerRecetas = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const recetas = yield Receta.find().populate('ingredientes instrucciones');
+        const recetas = yield receta2_js_1.default.find().populate('ingredientes instrucciones');
         return recetas;
     }
     catch (error) {
@@ -19,9 +24,10 @@ const obtenerRecetas = () => __awaiter(void 0, void 0, void 0, function* () {
         return [];
     }
 });
+exports.obtenerRecetas = obtenerRecetas;
 const obtenerRecetaPorNombre = (nombre) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const receta = yield Receta.findOne({ nombre }).populate('ingredientes instrucciones');
+        const receta = yield receta2_js_1.default.findOne({ nombre }).populate('ingredientes instrucciones');
         return receta;
     }
     catch (error) {
@@ -29,7 +35,4 @@ const obtenerRecetaPorNombre = (nombre) => __awaiter(void 0, void 0, void 0, fun
         return null;
     }
 });
-module.exports = {
-    obtenerRecetas,
-    obtenerRecetaPorNombre,
-};
+exports.obtenerRecetaPorNombre = obtenerRecetaPorNombre;

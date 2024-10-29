@@ -25,14 +25,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const instruccionSchema = new mongoose_1.Schema({
-    paso: {
-        type: Number,
-        required: true,
-    },
-    descripcion: {
-        type: String,
-        required: true,
-    },
+    paso: { type: Number, required: true },
+    descripcion: { type: String, required: true },
 });
 const Instruccion = mongoose_1.default.model('Instruccion', instruccionSchema);
 exports.default = Instruccion;

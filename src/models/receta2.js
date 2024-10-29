@@ -25,18 +25,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const recetaSchema = new mongoose_1.Schema({
-    nombre: {
-        type: String,
-        required: true,
-    },
-    ingredientes: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'Ingrediente',
-        }],
-    instrucciones: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'Instruccion',
-        }],
+    nombre: { type: String, required: true },
+    ingredientes: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Ingrediente' }],
+    instrucciones: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Instruccion' }],
 });
 const Receta = mongoose_1.default.model('Receta', recetaSchema);
 exports.default = Receta;

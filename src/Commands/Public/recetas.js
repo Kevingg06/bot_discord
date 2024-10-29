@@ -1,4 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
+const Receta = require('../../models/receta2.js').default; 
+const Ingrediente = require('../../models/ingrediente.js').default;
+const Instruccion = require('../../models/instruccion.js').default; 
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,51 +17,34 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option => 
             option.setName('instrucciones')
-                .setDescription('Instrucciones de la receta (separadas por punto y coma)')
+                .setDescription('Instrucciones de la receta (separadas por saltos de línea)')
                 .setRequired(true)),
 
-    async execute(interaction, client) {
+    async execute(interaction) {
         const nombre = interaction.options.getString('nombre');
-        const ingredientesString = interaction.options.getString('ingredientes');
-        const instruccionesString = interaction.options.getString('instrucciones');
+        const ingredientesInput = interaction.options.getString('ingredientes').split(',').map(ing => ing.trim());
+        const instruccionesInput = interaction.options.getString('instrucciones').split('\n').map(ins => ins.trim());
 
         try {
-     
-            const Receta = (await import('../../models/receta2.mjs')).default;
-            const Ingrediente = (await import('../../models/ingrediente.mjs')).default;
-            const Instruccion = (await import('../../models/instruccion.mjs')).default;
-
-      
-            const ingredientesArray = ingredientesString.split(',').map(i => i.trim());
-            const ingredientesIds = await Promise.all(ingredientesArray.map(async (nombre) => {
+            // Crear y guardar ingredientes
+            const ingredientesIds = await Promise.all(ingredientesInput.map(async (nombre) => {
                 const nuevoIngrediente = new Ingrediente({ nombre });
-                const savedIngrediente = await nuevoIngrediente.save();
-                return savedIngrediente._id;
+                const ingredienteGuardado = await nuevoIngrediente.save();
+                return ingredienteGuardado._id;
             }));
 
-           
-            const instruccionesArray = instruccionesString.split(';').map(i => i.trim());
-            const instruccionesIds = await Promise.all(instruccionesArray.map(async (instruccion, index) => {
-                if (!instruccion) {
-                    console.error(`Instrucción vacía en el paso ${index + 1}`);
-                    return null; 
-                }
-                const nuevaInstruccion = new Instruccion({
-                    paso: index + 1,
-                    descripcion: instruccion
-                });
-                const savedInstruccion = await nuevaInstruccion.save();
-                return savedInstruccion._id;
+            // Crear y guardar instrucciones
+            const instruccionesIds = await Promise.all(instruccionesInput.map(async (descripcion, index) => {
+                const nuevaInstruccion = new Instruccion({ paso: index + 1, descripcion });
+                const instruccionGuardada = await nuevaInstruccion.save();
+                return instruccionGuardada._id;
             }));
 
-
-            const filteredInstruccionesIds = instruccionesIds.filter(id => id !== null);
-
-    
+            // Crear y guardar la receta
             const nuevaReceta = new Receta({
                 nombre: nombre.trim(),
                 ingredientes: ingredientesIds,
-                instrucciones: filteredInstruccionesIds,
+                instrucciones: instruccionesIds,
             });
 
             await nuevaReceta.save();
