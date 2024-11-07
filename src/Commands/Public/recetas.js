@@ -1,7 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const Receta = require('../../models/receta2.js').default; 
 const Ingrediente = require('../../models/ingrediente.js').default;
-const Instruccion = require('../../models/instruccion.js').default; 
+const Instruccion = require('../../models/instruccion.js').default;
+const ImagenUrl = require('../../models/imagenUrl.js').default; // Importamos el modelo ImagenUrl
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,12 +19,17 @@ module.exports = {
         .addStringOption(option => 
             option.setName('instrucciones')
                 .setDescription('Instrucciones de la receta (separadas por saltos de línea)')
-                .setRequired(true)),
+                .setRequired(true))
+        .addStringOption(option => 
+            option.setName('imagenurl')
+                .setDescription('URL de la imagen de la receta')
+                .setRequired(true)), // Campo obligatorio para la imagen de la receta
 
     async execute(interaction) {
         const nombre = interaction.options.getString('nombre');
         const ingredientesInput = interaction.options.getString('ingredientes').split(',').map(ing => ing.trim());
         const instruccionesInput = interaction.options.getString('instrucciones').split('\n').map(ins => ins.trim());
+        const imagenUrlInput = interaction.options.getString('imagenurl'); // Obtener la URL de la imagen
 
         try {
             // Crear y guardar ingredientes
@@ -40,17 +46,27 @@ module.exports = {
                 return instruccionGuardada._id;
             }));
 
-            // Crear y guardar la receta
+            // Crear y guardar la URL de la imagen
+            const nuevaImagenUrl = new ImagenUrl({
+                url: imagenUrlInput.trim(), // Guardar la URL de la imagen
+                descripcion: 'Imagen de la receta', // Descripción opcional de la imagen
+            });
+
+            const imagenUrlGuardada = await nuevaImagenUrl.save();
+
+            // Crear y guardar la receta con la imagen asociada
             const nuevaReceta = new Receta({
                 nombre: nombre.trim(),
                 ingredientes: ingredientesIds,
                 instrucciones: instruccionesIds,
+                imagenUrl: imagenUrlGuardada._id, // Asociamos la imagen con la receta
             });
 
             await nuevaReceta.save();
 
+            // Responder al usuario
             await interaction.reply({
-                content: `Receta '${nombre.trim()}' guardada exitosamente.`,
+                content: `Receta '${nombre.trim()}' guardada exitosamente con la imagen.`,
                 ephemeral: true,
             });
         } catch (error) {

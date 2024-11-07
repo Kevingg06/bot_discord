@@ -9,4 +9,5 @@ const ingredienteSchema: Schema<IIngrediente> = new Schema({
 });
 
 const Ingrediente: Model<IIngrediente> = mongoose.model<IIngrediente>('Ingrediente', ingredienteSchema);
+
 export default Ingrediente;
