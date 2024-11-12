@@ -1,6 +1,6 @@
 {
     "tokenbot":"",
-    "mongoURI": "mongodb+srv://kevingonzalezr433:uDXzatvoENi6M6d0@botdiscord.h7pisxo.mongodb.net/?retryWrites=true&w=majority&appName=botDiscord",
+    "mongoURI": "",
     "clientId":"1267455379084804198"
 }
 
