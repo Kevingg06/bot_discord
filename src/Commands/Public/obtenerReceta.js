@@ -4,7 +4,7 @@ const Receta = require('../../models/receta2'); // Importamos el modelo Receta c
 // Función para obtener el precio del ingrediente
 async function obtenerPrecioIngrediente(nombreIngrediente) {
     const fetch = (await import('node-fetch')).default;
-    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(nombreIngrediente)}&pageSize=1&api_key=5JvLowPn2MfsgtDzJ43D1e3B2Tfff41c1CYH3OdP`;
+    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(nombreIngrediente)}&pageSize=1&api_key=key`;
 
     try {
         const response = await fetch(url);
